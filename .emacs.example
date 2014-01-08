@@ -1,0 +1,63 @@
+;; Show and delete white space
+(setq-default show-trailing-whitespace 1)
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+(setq require-final-newline 'query)
+
+;; Scrolling
+(setq scroll-step 1)
+
+;; Auto-Completion
+(add-to-list 'load-path "~/.emacs.d/emacs-ac")
+(require 'auto-complete-config)
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+(ac-config-default)
+
+;; RoR
+(add-to-list 'load-path "~/.emacs.d/emacs-rails")
+(require 'ido)
+(require 'rails-reloaded)
+
+(autoload 'ruby-mode "ruby-mode" "Ruby" t)
+(add-to-list 'auto-mode-alist '("\\.rb$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.rake$" . ruby-mode))
+
+(ido-mode t)
+
+;; CSS
+(add-to-list 'load-path "~/.emacs.d/emacs-css")
+(autoload 'css-mode "css-mode" "Mode for editing CSS files" t)
+(setq auto-mode-alist
+      (append '(("\\.css$" . css-mode))
+	      auto-mode-alist))
+
+;; Backups
+(setq backup-by-copying t)
+(setq backup-directory-alist
+      (cons '("." . "~/.emacs.d/backups")
+            backup-directory-alist))
+
+;; PHP
+(add-to-list 'load-path "~/.emacs.d/emacs-php")
+(require 'php-mode)
+
+(setq php-mode-force-pear t)
+(add-hook 'php-mode-hook
+	  '(lambda ()
+	     (setq indent-tabs-mode t)
+	     (setq tab-width 4)
+	     (setq c-basic-indent 4)))
+
+;; JavaScript
+(add-to-list 'load-path "~/.emacs.d/emacs-js")
+(require 'javascript-mode)
+
+(add-to-list 'auto-mode-alist '("\\.js\\'" . javascript-mode))
+(setq javascript-indent-level 2)
+(autoload 'javascript-mode "javascript" "Mode for JavaScript files" t)
+
+(add-hook 'javascript-mode-hook
+     '(lambda ()
+        (add-hook 'before-save-hook
+                  (lambda ()
+                    (untabify (point-min) (point-max))))))
+
